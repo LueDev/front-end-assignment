@@ -150,7 +150,7 @@ async function submitForm() {
     };
 
     // Send the POST request
-    fetch('http://localhost:3000/submit-form/', requestOptions)
+    fetch('https://0211560d-577a-407d-94ab-dc0383c943e0.mock.pstmn.io/submitform', requestOptions)
       .then((response) => {
         if (response.status === 200) {
           // Successful submission

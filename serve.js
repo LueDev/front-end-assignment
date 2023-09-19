@@ -19,7 +19,7 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'dist')));
 
 // Handle POST request for form submission
-app.post('/submit-form', (req, res) => {
+app.post('https://0211560d-577a-407d-94ab-dc0383c943e0.mock.pstmn.io/submitform', (req, res) => {
   const formData = req.body;
 
   if (formData) {
