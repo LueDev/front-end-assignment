@@ -1,40 +1,39 @@
 #!/usr/bin/env node
+'use strict';
 
-'use strict'
-
-/**
- * Dependencies
- */
-
-const path = require('path');
 const express = require('express');
+const bodyParser = require('body-parser');
+const path = require('path');
+const cors = require('cors');
 
+const app = express();
+const PORT = process.env.PORT || 3000;
 
-/**
- * Constants
- */
+// Enable CORS for all routes (you can configure it more restrictively)
+app.use(cors());
 
-const PORT = process.env.PORT || '7000';
-const DIST = path.join(process.env.PWD, (process.env.NODE_ENV === 'test') ? 'test' : 'dist');
+// Middleware to parse JSON request bodies
+app.use(bodyParser.json());
 
-/**
- * The Express App
- */
+// Serve static files from the 'dist' directory
+app.use(express.static(path.join(__dirname, 'dist')));
 
-let app = express();
+// Handle POST request for form submission
+app.post('/submit-form', (req, res) => {
+  const formData = req.body;
 
-app.get('/*', (request, resolve) => {
-  let req = request.params[0];
-
-  let page = (req === '')
-    ? 'index.html' : (req.includes('.'))
-      ? req : `${req}.html`;
-
-  resolve.sendFile(`${DIST}/${page}`);
+  if (formData) {
+    // Successful submission
+    res.status(200).json({ message: 'Thank you for your submission.' });
+    console.log(formData);
+  } else {
+    // Invalid submission
+    res.status(400).json({ message: 'Your submission is invalid, please try again.' });
+    console.log("Didn't work");
+  }
 });
 
+// Start the server
 app.listen(PORT, () => {
-  console.log(`ENV: ${process.env.NODE_ENV}`);
-
-  console.log(`Running @ http://localhost:${PORT}`);
-})
+  console.log(`Server is running at http://localhost:${PORT}`);
+});
